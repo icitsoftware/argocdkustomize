@@ -1,0 +1,24 @@
+# kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+# ref namespace.yml
+namespace: prod-argocd
+
+namePrefix: prod-
+
+resources:
+- namespace.yml
+- ../../base
+
+patches:
+- path: mongodb/deployment-patch.yml
+- path: mongodb/mongodb-secret.yml
+
+generatorOptions:
+  disableNameSuffixHash: true
+
+images:
+- name: mongodb-template
+  newName: mongo
+  newTag: latest
